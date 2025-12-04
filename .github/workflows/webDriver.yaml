@@ -1,0 +1,34 @@
+name: Selenium WebDriver Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+      
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Build the project
+        run: dotnet build --no-restore
+
+      - name: Run testProject1 tests
+        run: dotnet test TestProject1/TestProject1.csproj --no-build --verbosity normal
+
+      - name: Run testProject2 tests
+        run: dotnet test TestProject2/TestProject2.csproj --no-build --verbosity normal
